@@ -8,10 +8,16 @@ jobs:
     strategy:
       matrix: #job을 os에 맞춰서 세번 돌린다
         os : ['windows-latest', 'macos-latest', 'ubuntu-latest']
+        nodejs: [ '14.x', '16.x' ] #빌드서버에서 14대의 최신버전, 16대의 최신버전 내가 직접 받는 거랑은 다를 수 있음
     runs-on: ${{ matrix.os }}
 
     steps:
+      - name: Choose node.js version
+        uses: actions/setup-node@v3 # 깃헙에서 공식적으로 관리하는 액션 중 하나, 사람들이 이미 오픈소스로 만들어 놓은 액션들이 많음
+        with: #총 6번의 액션이 돌아감, node 버전을 선언하고 뭔가를 하는 식
+          node-version: ${{ matrix.nodejs }}
       - name: Say Hello World from ${{ matrix.os }}
         shell: bash
         run: |
           echo "Hello, from ${{ matrix.os }}"
+          echo "node version: $(node --version)"
