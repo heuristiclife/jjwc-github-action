@@ -2,27 +2,21 @@ name: 'My First GitHub Actions'
 
 on: push
 
-env:
-  PRESET_VALUE: "This is the value preset"
-
 jobs:
   first_job:
     name: 'First Job'
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set environment variable 1
+      - name: Mask output value
         shell: bash
         run: |
-          echo "VAR1='This is the value from the step 1'" >> $GITHUB_ENV
-      - name: Set environment variable 2
-        shell: pwsh
-        run: |
-          echo "VAR2='This is the value from the step 2'" | `
-            Out-File -FilePath $env:GITHUB_ENV -Encoding UTF-8 -Append
-      - name: Check environment variables
+          value1="This is the super secret value"
+          
+          echo "::add-mask::$value1"
+          echo "::set-output name=first_value::$value1"
+
+      - name: Check output value
         shell: bash
         run: |
-          echo "preset value: ${{ env.PRESET_VALUE }}"
-          echo "var1: $VAR1"
-          echo "var2: $VAR2"
+          echo "value: ${{ steps.first.outputs.first_value }}"
