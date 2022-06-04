@@ -2,16 +2,63 @@ name: 'My First Github Actions'
 
 on: push
 
+env: #환경변수명
+  WORKFLOW_LEVEL: "This environment variable comes from the workflow level"
+
 jobs: 
   first_job: 
     name: 'First Job'
     runs-on: ubuntu-latest
+#환경변수는 workflow, jobs, steps 수준에서 다 할 수 있으나 스코핑 확인
+
+    env: #환경변수명
+      JOB_LEVEL_1: "This environment variable comes from the job level"
+
     steps:
     - name: 'Say Hello World 1'
       shell: bash
       run: |
         echo: "Hello World from step #1"
     - name: 'Say Lorem Ipsum 2'
-      shell: push
+      shell: pwsh
       run: |
         echo: "Lorem Ipsum from step #2"
+    
+    - name: Check environment variable 1
+      shell: bash
+      env:
+        STEP_LEVEL_1: "This environment variable comes from the step level 1"
+      run: |
+        echo: "workflow level: $WORKFLOW_LEVEL"
+        echo: "job level: $JOB_LEVEL_1"
+        echo: "step level: $STEP_LEVEL_1"
+
+        first_job: 
+
+    name: 'Second Job'
+    runs-on: ubuntu-latest
+#환경변수는 workflow, jobs, steps 수준에서 다 할 수 있으나 스코핑 확인
+
+    env: #환경변수명
+      JOB_LEVEL_2: "This environment variable comes from the job level"
+
+    steps:
+    - name: 'Say Hello World 1'
+      shell: bash
+      run: |
+        echo: "Hello World from step #1"
+    - name: 'Say Lorem Ipsum 2'
+      shell: pwsh
+      run: |
+        echo: "Lorem Ipsum from step #2"
+    
+    - name: Check environment variable 2
+      shell: bash
+      env:
+        STEP_LEVEL_2: "This environment variable comes from the step level 2"
+      run: |
+        echo: "workflow level: $WORKFLOW_LEVEL"
+        echo: "job level: $JOB_LEVEL_1"
+        echo: "job level: $JOB_LEVEL_2"
+        echo: "step level: $STEP_LEVEL_1"
+        echo: "step level: $STEP_LEVEL_2"
